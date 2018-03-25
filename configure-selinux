@@ -1,0 +1,19 @@
+## For RHEL 7 system SELINUX - verify your SELINUX config
+getenforce
+## output Enforcing
+## Issue the command below to disable temporary SELINUX
+setenforce 0
+
+## Stop NGINX service
+systemctl stop rh-nginx18-nginx
+
+## Install the following utilities
+yum install -y setroubleshoot-server selinux-policy-devel
+sepolicy network -t http_port_t
+semanage port -m -t http_port_t -p tcp 8080
+
+## Enable SELINUX
+setenforce 1
+
+## Restart NGINX
+systemctl start rh-nginx18-nginx
